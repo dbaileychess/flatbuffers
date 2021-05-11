@@ -141,3 +141,4 @@ yarn-error.log
 **/vendor
 **/go.sum
 flatbuffers.pc
+docs_src/.slate/**
