@@ -301,10 +301,10 @@
     <div class="toc-wrapper">
       <img src="images/logo-1e815a84.png" class="logo" alt="" />
         <div class="lang-selector">
-              <a href="#" data-language-name="cpp">cpp</a>
-              <a href="#" data-language-name="java">java</a>
-              <a href="#" data-language-name="csharp">csharp</a>
-              <a href="#" data-language-name="python">python</a>
+              <a href="#" data-language-name="cpp">C++</a>
+              <a href="#" data-language-name="java">Java</a>
+              <a href="#" data-language-name="csharp">C#</a>
+              <a href="#" data-language-name="python">Python</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -313,24 +313,66 @@
       <ul id="toc" class="toc-list-h1">
           <li>
             <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
-          </li>
-          <li>
-            <a href="#programmer-39-s-guide" class="toc-h1 toc-link" data-title="Programmer's Guide">Programmer's Guide</a>
-          </li>
-          <li>
-            <a href="#tutorial" class="toc-h1 toc-link" data-title="Tutorial">Tutorial</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#writing-the-monsters-flatbuffer-schema" class="toc-h2 toc-link" data-title="Writing the Monsters FlatBuffer Schema">Writing the Monsters FlatBuffer Schema</a>
+                    <a href="#license" class="toc-h2 toc-link" data-title="License">License</a>
                   </li>
                   <li>
-                    <a href="#reading-and-writing-monster-flatbuffers" class="toc-h2 toc-link" data-title="Reading and Writing Monster FlatBuffers">Reading and Writing Monster FlatBuffers</a>
+                    <a href="#why-use-flatbuffers" class="toc-h2 toc-link" data-title="Why Use FlatBuffers?">Why Use FlatBuffers?</a>
                       <ul class="toc-list-h3">
                           <li>
-                            <a href="#importing-dependencies" class="toc-h3 toc-link" data-title="Importing dependencies">Importing dependencies</a>
+                            <a href="#why-not-use-protocol-buffers-or" class="toc-h3 toc-link" data-title="Why not use Protocol Buffers, or .. ?">Why not use Protocol Buffers, or .. ?</a>
                           </li>
                           <li>
-                            <a href="#initialize-the-flatbuffer-builder" class="toc-h3 toc-link" data-title="Initialize the flatbuffer builder">Initialize the flatbuffer builder</a>
+                            <a href="#but-all-the-cool-kids-use-json" class="toc-h3 toc-link" data-title="But all the cool kids use JSON!">But all the cool kids use JSON!</a>
+                          </li>
+                      </ul>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#getting-started" class="toc-h1 toc-link" data-title="Getting Started">Getting Started</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#tutorial" class="toc-h2 toc-link" data-title="Tutorial">Tutorial</a>
+                      <ul class="toc-list-h3">
+                          <li>
+                            <a href="#writing-the-monsters-flatbuffer-schema" class="toc-h3 toc-link" data-title="Writing the Monsters FlatBuffer Schema">Writing the Monsters FlatBuffer Schema</a>
+                          </li>
+                          <li>
+                            <a href="#reading-and-writing-monster-flatbuffers" class="toc-h3 toc-link" data-title="Reading and Writing Monster FlatBuffers">Reading and Writing Monster FlatBuffers</a>
+                              <ul class="toc-list-h4">
+                                  <li>
+                                    <a href="#importing-dependencies" class="toc-h4 toc-link" data-title="Importing dependencies">Importing dependencies</a>
+                                  </li>
+                                  <li>
+                                    <a href="#initialize-the-flatbuffer-builder" class="toc-h4 toc-link" data-title="Initialize the flatbuffer builder">Initialize the flatbuffer builder</a>
+                                  </li>
+                              </ul>
+                          </li>
+                      </ul>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#flatbuffer-schema" class="toc-h1 toc-link" data-title="FlatBuffer Schema">FlatBuffer Schema</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#schema-fbs" class="toc-h2 toc-link" data-title="Schema (.fbs)">Schema (<code>.fbs</code>)</a>
+                      <ul class="toc-list-h3">
+                          <li>
+                            <a href="#tables" class="toc-h3 toc-link" data-title="Tables">Tables</a>
+                          </li>
+                          <li>
+                            <a href="#structs" class="toc-h3 toc-link" data-title="Structs">Structs</a>
+                          </li>
+                      </ul>
+                  </li>
+                  <li>
+                    <a href="#schema-compiler-flatc" class="toc-h2 toc-link" data-title="Schema Compiler (flatc)">Schema Compiler (<code>flatc</code>)</a>
+                      <ul class="toc-list-h3">
+                          <li>
+                            <a href="#generator-options" class="toc-h3 toc-link" data-title="Generator Options">Generator Options</a>
                           </li>
                       </ul>
                   </li>
@@ -349,6 +391,7 @@
           </li>
       </ul>
         <ul class="toc-footer">
+            <li><a href='https://github.com/google/flatbuffers'>Flatbuffer's Source on GitHub</a></li>
             <li><a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a></li>
         </ul>
     </div>
@@ -356,8 +399,28 @@
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='introduction'>Introduction</h1>
-<p>Flatbuffers</p>
-<h1 id='programmer-39-s-guide'>Programmer&#39;s Guide</h1><h1 id='tutorial'>Tutorial</h1><h2 id='writing-the-monsters-flatbuffer-schema'>Writing the Monsters FlatBuffer Schema</h2>
+<p>FlatBuffers is an efficient cross platform serialization library for <a href="#cpp">C++</a>, C#, C, Go, Java, Kotlin, JavaScript, Lobster, Lua, TypeScript, PHP, Python, Rust and Swift. It was originally created at Google for game development and other performance-critical applications.</p>
+<h2 id='license'>License</h2>
+<p>It is available as Open Source on <a href="https://github.com/google/flatbuffers">GitHub</a> under the Apache license, v2 (see <a href="../LICENSE.txt">LICENSE.txt</a>).</p>
+<h2 id='why-use-flatbuffers'>Why Use FlatBuffers?</h2>
+<ul>
+<li><p><strong>Access to serialized data without parsing/unpacking</strong> - What sets FlatBuffers apart is that it represents hierarchical data in a flat binary buffer in such a way that it can still be accessed directly without parsing/unpacking, while also still supporting data structure evolution (forwards/backwards compatibility).</p></li>
+<li><p><strong>Memory efficiency and speed</strong> - The only memory needed to access your data is that of the buffer. It requires 0 additional allocations (in C++, other languages may vary). FlatBuffers is also very suitable for use with mmap (or streaming), requiring only part of the buffer to be in memory. Access is close to the speed of raw struct access with only one extra indirection (a kind of vtable) to allow for format evolution and optional fields. It is aimed at projects where spending time and space (many memory allocations) to be able to access or construct serialized data is undesirable, such as in games or any other performance sensitive applications. See the benchmarks for details.</p></li>
+<li><p><strong>Flexible</strong> - Optional fields means not only do you get great forwards and backwards compatibility (increasingly important for long-lived games: don&#39;t have to update all data with each new version!). It also means you have a lot of choice in what data you write and what data you don&#39;t, and how you design data structures.</p></li>
+<li><p><strong>Tiny code footprint</strong> - Small amounts of generated code, and just a single small header as the minimum dependency, which is very easy to integrate. Again, see the benchmark section for details.
+Strongly typed - Errors happen at compile time rather than manually having to write repetitive and error prone run-time checks. Useful code can be generated for you.</p></li>
+<li><p><strong>Convenient to use</strong> - Generated C++ code allows for terse access &amp; construction code. Then there&#39;s optional functionality for parsing schemas and JSON-like text representations at runtime efficiently if needed (faster and more memory efficient than other JSON parsers). Java, Kotlin and Go code supports object-reuse. C# has efficient struct based accessors.</p></li>
+<li><p><strong>Cross platform code with no dependencies</strong> - C++ code will work with any recent gcc/clang and VS2010. Comes with build files for the tests &amp; samples (Android .mk files, and cmake for all other platforms).</p></li>
+</ul>
+<h3 id='why-not-use-protocol-buffers-or'>Why not use Protocol Buffers, or .. ?</h3>
+<p>Protocol Buffers is indeed relatively similar to FlatBuffers, with the primary difference being that FlatBuffers does not need a parsing/ unpacking step to a secondary representation before you can access data, often coupled with per-object memory allocation. The code is an order of magnitude bigger, too. Protocol Buffers has no optional text import/export.</p>
+<h3 id='but-all-the-cool-kids-use-json'>But all the cool kids use JSON!</h3>
+<p>JSON is very readable (which is why we use it as our optional text format) and very convenient when used together with dynamically typed languages (such as JavaScript). When serializing data from statically typed languages, however, JSON not only has the obvious drawback of runtime inefficiency, but also forces you to write more code to access data (counterintuitively) due to its dynamic-typing serialization system. In this context, it is only a better choice for systems that have very little to no information ahead of time about what data needs to be stored.</p>
+
+<p>If you do need to store data that doesn&#39;t fit a schema, FlatBuffers also offers a schema-less (self-describing) version!</p>
+
+<p>Read more about the &quot;why&quot; of FlatBuffers in the white paper.</p>
+<h1 id='getting-started'>Getting Started</h1><h2 id='tutorial'>Tutorial</h2><h3 id='writing-the-monsters-flatbuffer-schema'>Writing the Monsters FlatBuffer Schema</h3>
 <blockquote>
 <p>Example IDL file for our monster&#39;s schema:</p>
 </blockquote>
@@ -446,7 +509,7 @@ our <code>Monster</code> table.</p>
 <p>The scalar types can also use alias type names such as <code>int16</code> instead
 of <code>short</code> and <code>float32</code> instead of <code>float</code>. Thus we could also write
 the <code>Weapon</code> table as:</p>
-<h2 id='reading-and-writing-monster-flatbuffers'>Reading and Writing Monster FlatBuffers</h2><h3 id='importing-dependencies'>Importing dependencies</h3><div class="highlight"><pre class="highlight cpp tab-cpp"><code>  <span class="cp">#include "monster_generated.h" // This was generated by `flatc`.
+<h3 id='reading-and-writing-monster-flatbuffers'>Reading and Writing Monster FlatBuffers</h3><h4 id='importing-dependencies'>Importing dependencies</h4><div class="highlight"><pre class="highlight cpp tab-cpp"><code>  <span class="cp">#include "monster_generated.h" // This was generated by `flatc`.
 </span>
   <span class="k">using</span> <span class="k">namespace</span> <span class="n">MyGame</span><span class="o">::</span><span class="n">Sample</span><span class="p">;</span> <span class="c1">// Specified in the schema.</span>
 </code></pre></div><div class="highlight"><pre class="highlight java tab-java"><code>  <span class="kn">import</span> <span class="nn">MyGame.Sample.*</span><span class="o">;</span> <span class="c1">//The `flatc` generated files. (Monster, Vec3, etc.)</span>
@@ -466,7 +529,7 @@ the <code>Weapon</code> table as:</p>
 <p>Now that we have compiled the schema for our programming language, we can
 start creating some monsters and serializing/deserializing them from
 FlatBuffers.</p>
-<h3 id='initialize-the-flatbuffer-builder'>Initialize the flatbuffer builder</h3><div class="highlight"><pre class="highlight cpp tab-cpp"><code>  <span class="c1">// Create a `FlatBufferBuilder`, which will be used to create our</span>
+<h4 id='initialize-the-flatbuffer-builder'>Initialize the flatbuffer builder</h4><div class="highlight"><pre class="highlight cpp tab-cpp"><code>  <span class="c1">// Create a `FlatBufferBuilder`, which will be used to create our</span>
   <span class="c1">// monsters' FlatBuffers.</span>
   <span class="n">flatbuffers</span><span class="o">::</span><span class="n">FlatBufferBuilder</span> <span class="nf">builder</span><span class="p">(</span><span class="mi">1024</span><span class="p">);</span>
 </code></pre></div><div class="highlight"><pre class="highlight java tab-java"><code>  <span class="c1">// Create a `FlatBufferBuilder`, which will be used to create our</span>
@@ -485,6 +548,88 @@ FlatBuffers.</p>
 to create an instance of the <code>FlatBufferBuilder</code>, which will contain the buffer
 as it grows. You can pass an initial size of the buffer (here 1024 bytes),
 which will grow automatically if needed:</p>
+<h1 id='flatbuffer-schema'>FlatBuffer Schema</h1><h2 id='schema-fbs'>Schema (<code>.fbs</code>)</h2><div class="highlight"><pre class="highlight plaintext"><code>// example IDL file
+
+namespace MyGame;
+
+attribute "priority";
+
+enum Color : byte { Red = 1, Green, Blue }
+
+union Any { Monster, Weapon, Pickup }
+
+struct Vec3 {
+  x:float;
+  y:float;
+  z:float;
+}
+
+table Monster {
+  pos:Vec3;
+  mana:short = 150;
+  hp:short = 100;
+  name:string;
+  friendly:bool = false (deprecated, priority: 1);
+  inventory:[ubyte];
+  color:Color = Blue;
+  test:Any;
+}
+
+root_type Monster;
+</code></pre></div>
+<p>The syntax of the schema language (aka IDL, Interface Definition Language) should look quite familiar to users of any of the C family of languages, and also to users of other IDLs. Let&#39;s look at an example first:</p>
+<h3 id='tables'>Tables</h3><div class="highlight"><pre class="highlight plaintext"><code>table Monster {
+  pos:Vec3;
+  mana:short = 150;
+  hp:short = 100;
+  name:string;
+  friendly:bool = false (deprecated, priority: 1);
+  inventory:[ubyte];
+  color:Color = Blue;
+  test:Any;
+}
+</code></pre></div>
+<p>Tables are the main way of defining objects in FlatBuffers, and consist of a name (here Monster) and a list of fields. Each field has a name, a type, and optionally a default value. If the default value is not specified in the schema, it will be 0 for scalar types, or null for other types. Some languages support setting a scalar&#39;s default to null. This makes the scalar optional.</p>
+
+<p>Fields do not have to appear in the wire representation, and you can choose to omit fields when constructing an object. You have the flexibility to add fields without fear of bloating your data. This design is also FlatBuffer&#39;s mechanism for forward and backwards compatibility. Note that:</p>
+
+<ul>
+<li><p>You can add new fields in the schema ONLY at the end of a table definition. Older data will still read correctly, and give you the default value when read. Older code will simply ignore the new field. If you want to have flexibility to use any order for fields in your schema, you can manually assign ids (much like Protocol Buffers), see the id attribute below.</p></li>
+<li><p>You cannot delete fields you don&#39;t use anymore from the schema, but you can simply stop writing them into your data for almost the same effect. Additionally you can mark them as deprecated as in the example above, which will prevent the generation of accessors in the generated C++, as a way to enforce the field not being used any more. (careful: this may break code!).</p></li>
+<li><p>You may change field names and table names, if you&#39;re ok with your code breaking until you&#39;ve renamed them there too.</p></li>
+</ul>
+
+<p>See &quot;Schema evolution examples&quot; below for more on this topic.</p>
+<h3 id='structs'>Structs</h3><div class="highlight"><pre class="highlight plaintext"><code>struct Vec3 {
+  x:float;
+  y:float;
+  z:float;
+}
+</code></pre></div>
+<p>Similar to a table, only now none of the fields are optional (so no defaults either), and fields may not be added or be deprecated. Structs may only contain scalars or other structs. Use this for simple objects where you are very sure no changes will ever be made (as quite clear in the example Vec3). Structs use less memory than tables and are even faster to access (they are always stored in-line in their parent object, and use no virtual table).</p>
+
+<aside class="notice">
+  Structs may only contain scalars or other structs.
+</aside>
+<h2 id='schema-compiler-flatc'>Schema Compiler (<code>flatc</code>)</h2><div class="highlight"><pre class="highlight plaintext"><code>flatc [ GENERATOR OPTIONS ] [ -o PATH ] [ -i PATH ] FILES
+</code></pre></div>
+<p>Schema are processed by the FlatBuffers Compiler <code>flatc</code> and generate the code for the specified language.</p>
+<h3 id='generator-options'>Generator Options</h3>
+<table><thead>
+<tr>
+<th>Generator Options</th>
+<th>Comment</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>--cpp</code></td>
+<td>Generate a C++ header for all definitions in this file</td>
+</tr>
+<tr>
+<td><code>--java</code></td>
+<td>Generate Java code</td>
+</tr>
+</tbody></table>
 <h1 id='languages'>Languages</h1>
 <p>Flatbuffers supports a variety of languages. The follow sections highlight 
 specifics of the languages.</p>
@@ -572,10 +717,10 @@ specifics of the languages.</p>
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="cpp">cpp</a>
-                <a href="#" data-language-name="java">java</a>
-                <a href="#" data-language-name="csharp">csharp</a>
-                <a href="#" data-language-name="python">python</a>
+                <a href="#" data-language-name="cpp">C++</a>
+                <a href="#" data-language-name="java">Java</a>
+                <a href="#" data-language-name="csharp">C#</a>
+                <a href="#" data-language-name="python">Python</a>
           </div>
       </div>
     </div>

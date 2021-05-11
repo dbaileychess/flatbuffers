@@ -33,6 +33,9 @@ ln -fs $DOC_SRC_BASE/index.html.md \
     $SLATE_SOURCE/index.html.md
 ln -fs $DOC_SRC_BASE/stylesheets/_variables.scss \
     $SLATE_SOURCE/stylesheets/_variables.scss
+# Need to work on Logo
+# ln -fs $DOC_SRC_BASE/images/fpl_logo_small.png \
+#     $SLATE_SOURCE/images/logo.png
 cd $SLATE_BASE
 bundle install
 
