@@ -252,6 +252,72 @@ root_type Monster;
 
 The syntax of the schema language (aka IDL, Interface Definition Language) should look quite familiar to users of any of the C family of languages, and also to users of other IDLs. Let's look at an example first:
 
+
+### Types
+
+#### Scalar Types
+
+```
+table ExampleTypes {
+  a:byte;
+  b:ubyte;
+  c:bool;
+  d:short;
+  e:ushort;
+}
+```
+> Is equivalent to
+
+```
+table ExampleTypesWithAliases {
+  a:int8;
+  b:uint8;
+  c:bool;
+  d:int16;
+  e:uint16;
+}
+```
+
+The built-in scalar types are fixed sized:
+
+Size (bits) | Types | Aliases
+------------|-------|--------
+8  | `byte` `ubyte` `bool` | `int8` `uint8`
+16 | `short` `ushort` | `int16` `uint16`
+32 | `int` `uint` `float` | `int32` `uint32` `float32`
+64 | `long` `ulong` `double` | `int64` `uint64` `float64`
+
+<aside class="notice">
+  The alias names allow  for example `uint8` to be used in place of `ubyte`, and `int32` can be used in place of `int` without affecting code generation.
+</aside>
+
+#### Non-Scalar Types
+
+```
+struct ExampleStruct {
+  exampleArray:[float:3]          // A fixed-size array of 3 floats
+}
+
+table ExampleTableA {
+  a:int
+}
+
+table ExampleTableB {
+  exampleVector:[float]           // A vector of floats
+  exampleString:string            // A string
+  exampleReference:ExampleTableA  // A reference to an ExampleTableA instance
+}
+```
+
+The built-in non-scalar types are
+
+Types | Syntax | Comment
+------|--------|--------
+vector  | `[type]` | A vector of any other types.
+[arrays](#arrays)  | `[type:N]` | An array of any scalar type, where `N` is the compile-time size. Only can be used within [`structs`](#structs)
+string  | `string` | May only hold UTF-8 or 7-bit ASCII. For other text encodings or general binary data use vectors (`[byte]` or `[ubyte]`) instead.
+references | `type-name` | A reference to another non-scalar type
+
 ### Tables
 
 ```
@@ -289,11 +355,55 @@ struct Vec3 {
 }
 ```
 
-Similar to a table, only now none of the fields are optional (so no defaults either), and fields may not be added or be deprecated. Structs may only contain scalars or other structs. Use this for simple objects where you are very sure no changes will ever be made (as quite clear in the example Vec3). Structs use less memory than tables and are even faster to access (they are always stored in-line in their parent object, and use no virtual table).
+Similar to a [table](#tables), only now none of the fields are optional (so no defaults either), and fields may not be added or be deprecated. Use this for simple objects where you are very sure no changes will ever be made (as quite clear in the example Vec3). Structs use less memory than tables and are even faster to access (they are always stored in-line in their parent object, and use no virtual table).
 
 <aside class="notice">
-  Structs may only contain scalars or other structs.
+  Structs may only contain scalar-types (e.g., scalars, arrays, or other structs.)
 </aside>
+
+#### Arrays
+
+> The following struct
+
+```
+struct Vec3 {
+  x:float;
+  y:float;
+  z:float;
+}
+```
+
+> Is binary equivalent to
+
+```
+struct Vec3 {
+  v:[float:3];
+}
+```
+
+Arrays are a convenience short-hand for a fixed-length collection of elements.
+They are specifed as `[scalar_type:count]` where `scalar_type` is a scalar and 
+`count` is the compile-time size of the array.
+
+<aside class="notice">
+  Arrays are currently only supported in a <a href="#structs">structs</a>
+</aside>
+
+### Enums
+
+```
+enum Color : byte { 
+  Red = 1, 
+  Green, 
+  Blue 
+}
+```
+
+Define a sequence of named constants, each with a given value, or increasing by one from the previous one. The default first value is `0`. As you can see in the enum declaration, you specify the underlying integral type of the enum with `:` (in this case `byte`), which then determines the type of any fields declared with this enum type.
+
+Only integer types are allowed, i.e. `byte`, `ubyte`, `short`, `ushort`, `int`, `uint`, `long` and `ulong`.
+
+Typically, enum values should only ever be added, never removed (there is no deprecation for enums). This requires code to handle forwards compatibility itself, by handling unknown enum values.
 
 ## Schema Compiler (`flatc`)
 

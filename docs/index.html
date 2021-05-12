@@ -361,10 +361,29 @@
                     <a href="#schema-fbs" class="toc-h2 toc-link" data-title="Schema (.fbs)">Schema (<code>.fbs</code>)</a>
                       <ul class="toc-list-h3">
                           <li>
+                            <a href="#types" class="toc-h3 toc-link" data-title="Types">Types</a>
+                              <ul class="toc-list-h4">
+                                  <li>
+                                    <a href="#scalar-types" class="toc-h4 toc-link" data-title="Scalar Types">Scalar Types</a>
+                                  </li>
+                                  <li>
+                                    <a href="#non-scalar-types" class="toc-h4 toc-link" data-title="Non-Scalar Types">Non-Scalar Types</a>
+                                  </li>
+                              </ul>
+                          </li>
+                          <li>
                             <a href="#tables" class="toc-h3 toc-link" data-title="Tables">Tables</a>
                           </li>
                           <li>
                             <a href="#structs" class="toc-h3 toc-link" data-title="Structs">Structs</a>
+                              <ul class="toc-list-h4">
+                                  <li>
+                                    <a href="#arrays" class="toc-h4 toc-link" data-title="Arrays">Arrays</a>
+                                  </li>
+                              </ul>
+                          </li>
+                          <li>
+                            <a href="#enums" class="toc-h3 toc-link" data-title="Enums">Enums</a>
                           </li>
                       </ul>
                   </li>
@@ -578,6 +597,103 @@ table Monster {
 root_type Monster;
 </code></pre></div>
 <p>The syntax of the schema language (aka IDL, Interface Definition Language) should look quite familiar to users of any of the C family of languages, and also to users of other IDLs. Let&#39;s look at an example first:</p>
+<h3 id='types'>Types</h3><h4 id='scalar-types'>Scalar Types</h4><div class="highlight"><pre class="highlight plaintext"><code>table ExampleTypes {
+  a:byte;
+  b:ubyte;
+  c:bool;
+  d:short;
+  e:ushort;
+}
+</code></pre></div>
+<blockquote>
+<p>Is equivalent to</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>table ExampleTypesWithAliases {
+  a:int8;
+  b:uint8;
+  c:bool;
+  d:int16;
+  e:uint16;
+}
+</code></pre></div>
+<p>The built-in scalar types are fixed sized:</p>
+
+<table><thead>
+<tr>
+<th>Size (bits)</th>
+<th>Types</th>
+<th>Aliases</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>8</td>
+<td><code>byte</code> <code>ubyte</code> <code>bool</code></td>
+<td><code>int8</code> <code>uint8</code></td>
+</tr>
+<tr>
+<td>16</td>
+<td><code>short</code> <code>ushort</code></td>
+<td><code>int16</code> <code>uint16</code></td>
+</tr>
+<tr>
+<td>32</td>
+<td><code>int</code> <code>uint</code> <code>float</code></td>
+<td><code>int32</code> <code>uint32</code> <code>float32</code></td>
+</tr>
+<tr>
+<td>64</td>
+<td><code>long</code> <code>ulong</code> <code>double</code></td>
+<td><code>int64</code> <code>uint64</code> <code>float64</code></td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+  The alias names allow  for example `uint8` to be used in place of `ubyte`, and `int32` can be used in place of `int` without affecting code generation.
+</aside>
+<h4 id='non-scalar-types'>Non-Scalar Types</h4><div class="highlight"><pre class="highlight plaintext"><code>struct ExampleStruct {
+  exampleArray:[float:3]          // A fixed-size array of 3 floats
+}
+
+table ExampleTableA {
+  a:int
+}
+
+table ExampleTableB {
+  exampleVector:[float]           // A vector of floats
+  exampleString:string            // A string
+  exampleReference:ExampleTableA  // A reference to an ExampleTableA instance
+}
+</code></pre></div>
+<p>The built-in non-scalar types are</p>
+
+<table><thead>
+<tr>
+<th>Types</th>
+<th>Syntax</th>
+<th>Comment</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>vector</td>
+<td><code>[type]</code></td>
+<td>A vector of any other types.</td>
+</tr>
+<tr>
+<td><a href="#arrays">arrays</a></td>
+<td><code>[type:N]</code></td>
+<td>An array of any scalar type, where <code>N</code> is the compile-time size. Only can be used within <a href="#structs"><code>structs</code></a></td>
+</tr>
+<tr>
+<td>string</td>
+<td><code>string</code></td>
+<td>May only hold UTF-8 or 7-bit ASCII. For other text encodings or general binary data use vectors (<code>[byte]</code> or <code>[ubyte]</code>) instead.</td>
+</tr>
+<tr>
+<td>references</td>
+<td><code>type-name</code></td>
+<td>A reference to another non-scalar type</td>
+</tr>
+</tbody></table>
 <h3 id='tables'>Tables</h3><div class="highlight"><pre class="highlight plaintext"><code>table Monster {
   pos:Vec3;
   mana:short = 150;
@@ -606,11 +722,46 @@ root_type Monster;
   z:float;
 }
 </code></pre></div>
-<p>Similar to a table, only now none of the fields are optional (so no defaults either), and fields may not be added or be deprecated. Structs may only contain scalars or other structs. Use this for simple objects where you are very sure no changes will ever be made (as quite clear in the example Vec3). Structs use less memory than tables and are even faster to access (they are always stored in-line in their parent object, and use no virtual table).</p>
+<p>Similar to a <a href="#tables">table</a>, only now none of the fields are optional (so no defaults either), and fields may not be added or be deprecated. Use this for simple objects where you are very sure no changes will ever be made (as quite clear in the example Vec3). Structs use less memory than tables and are even faster to access (they are always stored in-line in their parent object, and use no virtual table).</p>
 
 <aside class="notice">
-  Structs may only contain scalars or other structs.
+  Structs may only contain scalar-types (e.g., scalars, arrays, or other structs.)
 </aside>
+<h4 id='arrays'>Arrays</h4>
+<blockquote>
+<p>The following struct</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>struct Vec3 {
+  x:float;
+  y:float;
+  z:float;
+}
+</code></pre></div>
+<blockquote>
+<p>Is binary equivalent to</p>
+</blockquote>
+<div class="highlight"><pre class="highlight plaintext"><code>struct Vec3 {
+  v:[float:3];
+}
+</code></pre></div>
+<p>Arrays are a convenience short-hand for a fixed-length collection of elements.
+They are specifed as <code>[scalar_type:count]</code> where <code>scalar_type</code> is a scalar and 
+<code>count</code> is the compile-time size of the array.</p>
+
+<aside class="notice">
+  Arrays are currently only supported in a <a href="#structs">structs</a>
+</aside>
+<h3 id='enums'>Enums</h3><div class="highlight"><pre class="highlight plaintext"><code>enum Color : byte { 
+  Red = 1, 
+  Green, 
+  Blue 
+}
+</code></pre></div>
+<p>Define a sequence of named constants, each with a given value, or increasing by one from the previous one. The default first value is <code>0</code>. As you can see in the enum declaration, you specify the underlying integral type of the enum with <code>:</code> (in this case <code>byte</code>), which then determines the type of any fields declared with this enum type.</p>
+
+<p>Only integer types are allowed, i.e. <code>byte</code>, <code>ubyte</code>, <code>short</code>, <code>ushort</code>, <code>int</code>, <code>uint</code>, <code>long</code> and <code>ulong</code>.</p>
+
+<p>Typically, enum values should only ever be added, never removed (there is no deprecation for enums). This requires code to handle forwards compatibility itself, by handling unknown enum values.</p>
 <h2 id='schema-compiler-flatc'>Schema Compiler (<code>flatc</code>)</h2><div class="highlight"><pre class="highlight plaintext"><code>flatc [ GENERATOR OPTIONS ] [ -o PATH ] [ -i PATH ] FILES
 </code></pre></div>
 <p>Schema are processed by the FlatBuffers Compiler <code>flatc</code> and generate the code for the specified language.</p>
