@@ -1,4 +1,5 @@
 #include "annotated_binary_text_gen.h"
+#include <bits/stdint-uintn.h>
 
 #include <algorithm>
 #include <sstream>
@@ -40,7 +41,9 @@ static std::string ToString(const BinarySectionType type) {
 }
 
 static bool IsOffset(const BinaryRegionType type) {
-  return type == BinaryRegionType::UOffset || type == BinaryRegionType::SOffset;
+  return type == BinaryRegionType::UOffset ||
+         type == BinaryRegionType::SOffset ||
+         type == BinaryRegionType::UOffset64;
 }
 
 template<typename T> std::string ToString(T value) {
@@ -115,6 +118,9 @@ static std::string ToValueString(const BinaryRegion &region,
     case BinaryRegionType::UType: return ToValueString<uint8_t>(region, binary);
 
     // Handle Offsets separately, incase they add additional details.
+    case BinaryRegionType::UOffset64:
+      s += ToValueString<uint64_t>(region, binary);
+      break;
     case BinaryRegionType::UOffset:
       s += ToValueString<uint32_t>(region, binary);
       break;
@@ -278,7 +284,8 @@ static std::string GenerateDocumentation(const BinaryRegion &region,
 
   {
     std::stringstream ss;
-    ss << std::setw(static_cast<int>(output_config.largest_type_string)) << std::left;
+    ss << std::setw(static_cast<int>(output_config.largest_type_string))
+       << std::left;
     ss << GenerateTypeString(region);
     s += ss.str();
   }
@@ -293,7 +300,8 @@ static std::string GenerateDocumentation(const BinaryRegion &region,
     const std::string value = ToValueString(region, binary, output_config);
 
     std::stringstream ss;
-    ss << std::setw(static_cast<int>(output_config.largest_value_string)) << std::left;
+    ss << std::setw(static_cast<int>(output_config.largest_value_string))
+       << std::left;
     ss << value.substr(0, output_config.max_bytes_per_line);
     s += ss.str();
 
@@ -301,7 +309,8 @@ static std::string GenerateDocumentation(const BinaryRegion &region,
         value.substr(std::min(output_config.max_bytes_per_line, value.size()));
   } else {
     std::stringstream ss;
-    ss << std::setw(static_cast<int>(output_config.largest_value_string)) << std::left;
+    ss << std::setw(static_cast<int>(output_config.largest_value_string))
+       << std::left;
     ss << ToValueString(region, binary, output_config);
     s += ss.str();
   }
