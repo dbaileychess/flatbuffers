@@ -257,6 +257,8 @@ set(FlatBuffers_Tests_SRCS
   ${CMAKE_CURRENT_BINARY_DIR}/tests/alignment_test_generated.h
   # file generate by running compiler on tests/key_field/key_field_sample.fbs
   ${CMAKE_CURRENT_BINARY_DIR}/tests/key_field/key_field_sample_generated.h
+  # file generate by running compiler on tests/64bit/test_64bit_generated.fbs
+  ${CMAKE_CURRENT_BINARY_DIR}/tests/64bit/test_64bit_generated.h
 )
 
 set(FlatBuffers_Tests_CPP17_SRCS
@@ -625,6 +627,7 @@ if(FLATBUFFERS_BUILD_TESTS)
   compile_flatbuffers_schema_to_cpp(tests/native_inline_table_test.fbs "--gen-compare")
   compile_flatbuffers_schema_to_cpp(tests/alignment_test.fbs "--gen-compare")
   compile_flatbuffers_schema_to_cpp(tests/key_field/key_field_sample.fbs)
+  compile_flatbuffers_schema_to_cpp(tests/64bit/test_64bit.fbs)
   if(NOT (MSVC AND (MSVC_VERSION LESS 1900)))
     compile_flatbuffers_schema_to_cpp(tests/monster_extra.fbs) # Test floating-point NAN/INF.
   endif()
