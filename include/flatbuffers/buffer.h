@@ -26,6 +26,7 @@ namespace flatbuffers {
 // Wrapper for uoffset_t to allow safe template specialization.
 // Value is allowed to be 0 to indicate a null object (see e.g. AddOffset).
 template<typename T> struct Offset {
+  typedef uoffset_t offset_type;
   uoffset_t o;
   Offset() : o(0) {}
   Offset(uoffset_t _o) : o(_o) {}
@@ -34,6 +35,7 @@ template<typename T> struct Offset {
 };
 
 template<typename T> struct Offset64 {
+  typedef uoffset64_t offset_type;
   uoffset64_t o;
   Offset64() : o(0) {}
   Offset64(const uoffset64_t offset) : o(offset) {}
